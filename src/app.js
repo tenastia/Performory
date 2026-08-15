@@ -595,6 +595,14 @@ var App = (function () {
       document.body.classList.add('standalone');
     }
 
+    // Inside an auto-sized iframe, viewport units are circular: the frame sizes
+    // itself to the content, and the content sizes itself to the frame, so the
+    // app collapses to a sliver. Pin a phone-shaped height instead.
+    if (window.self !== window.top) {
+      var host = document.getElementById('device');
+      host.style.height = Math.max(window.innerHeight || 0, 812) + 'px';
+    }
+
     hydrateArtwork().then(function () {
       var route = parse(location.hash);
       stack = [route];

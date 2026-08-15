@@ -95,7 +95,8 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   width: 100%;
   max-width: 440px;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh; /* avoids the iOS Safari URL-bar height jump */
   margin: 0 auto;
   background: var(--black-1000);
   overflow: hidden;

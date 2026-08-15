@@ -107,7 +107,8 @@ a { color: inherit; text-decoration: none; }
   position: relative;
   width: 100%;
   max-width: 440px;
-  height: 100%;
+  height: 100vh;
+  height: 100dvh; /* avoids the iOS Safari URL-bar height jump */
   margin: 0 auto;
   background: var(--black-1000);
   overflow: hidden;
@@ -4038,6 +4039,14 @@ var App = (function () {
 
     if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
       document.body.classList.add('standalone');
+    }
+
+    // Inside an auto-sized iframe, viewport units are circular: the frame sizes
+    // itself to the content, and the content sizes itself to the frame, so the
+    // app collapses to a sliver. Pin a phone-shaped height instead.
+    if (window.self !== window.top) {
+      var host = document.getElementById('device');
+      host.style.height = Math.max(window.innerHeight || 0, 812) + 'px';
     }
 
     hydrateArtwork().then(function () {
