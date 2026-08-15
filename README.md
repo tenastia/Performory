@@ -23,6 +23,16 @@ HTTPS (or `localhost`) is required for the microphone and for state to persist �
 
 During development you can skip the build and open `src/index.html` directly.
 
+## Publishing it publicly
+
+`.github/workflows/pages.yml` rebuilds `dist/` and publishes it to GitHub Pages
+on every push to `main` or the prototype branch. Enable it once in
+**Settings → Pages → Source: GitHub Actions**; after that the run's summary
+shows the public URL.
+
+A Pages URL is a real HTTPS origin, so the microphone and persistent state work
+there — a sandboxed embed blocks both.
+
 ## Layout
 
 | Path | What it is |

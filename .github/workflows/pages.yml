@@ -1,0 +1,59 @@
+# Publishes the prototype to GitHub Pages so anyone can open it — no login,
+# and on a real HTTPS origin, so the microphone and persistent state work
+# (both of which a sandboxed embed blocks).
+#
+# One-time setup: repo Settings → Pages → Source: "GitHub Actions".
+name: Publish prototype
+
+on:
+  push:
+    branches:
+      - main
+      - claude/performory-ios-prototype-dioxa1
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Rebuild from src/ rather than trusting the committed dist/, so the
+      # published page can never drift from the source.
+      - name: Build
+        run: node build.mjs
+
+      - name: Check the build is self-contained
+        run: |
+          if grep -qE '<(script src|link [^>]*href="[^"]*\.css)' dist/index.html; then
+            echo "dist/index.html still references external files" >&2
+            exit 1
+          fi
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4
