@@ -62,6 +62,23 @@ system and each carries a visible note saying it is an addition.
 
 ---
 
+## 2a. The showcase frame (presentation only)
+
+`src/showcase.css` wraps the app in a device frame on a captioned stage, so a
+reviewer opening the link sees a phone rather than a web page. **None of it is
+product** — do not port it to the native app. It contributes the titanium rail,
+the Dynamic Island, the side buttons, and the home indicator, all of which the
+real device supplies on its own.
+
+It collapses entirely below 620px wide or 640px tall: the app then runs
+full-bleed, because a phone frame drawn inside a phone is just a smaller screen.
+The caption column needs more room still and appears above 1000px.
+
+The one place the frame reaches into the app is `--safe-bottom`. A real device
+reports its home-indicator inset through `env(safe-area-inset-bottom)`; the
+simulated device declares the same variable so the tab bar clears the indicator
+exactly as it would on hardware.
+
 ## 3. Design tokens
 
 Transcribed from the Figma variable collections, not eyeballed. They live at the

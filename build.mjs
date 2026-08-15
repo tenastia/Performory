@@ -24,7 +24,7 @@ async function dataUri(relPath, mime) {
 }
 
 let html = await read('index.html');
-let css = await read('styles.css');
+let css = (await read('styles.css')) + '\n' + (await read('showcase.css'));
 
 // Fonts → data URIs so the page has zero external requests.
 for (const [file, family] of [
@@ -42,6 +42,7 @@ for (const s of scripts) js.push(await read(s));
 
 html = html
   .replace('<link rel="stylesheet" href="styles.css">', `<style>\n${css}\n</style>`)
+  .replace('<link rel="stylesheet" href="showcase.css">\n', '')
   .replace(
     scripts.map((s) => `<script src="${s}"></script>`).join('\n'),
     `<script>\n${js.join('\n')}\n</script>`

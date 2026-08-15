@@ -674,7 +674,7 @@ var Screens = (function () {
         gap(8) +
         '<p class="body-xs dim" id="micNote" style="margin:0;height:16px"></p>' +
         '</div>' +
-        '<div style="padding:0 24px calc(48px + env(safe-area-inset-bottom,0px))">' +
+        '<div style="padding:0 24px calc(48px + var(--safe-bottom))">' +
         '<button class="record-btn" id="recBtn" aria-label="Start recording">' +
         Icons.get('mic', { size: 26, sw: 1.5 }) + '</button></div>' +
         '</div>'

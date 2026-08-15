@@ -597,10 +597,17 @@ var App = (function () {
 
     // Inside an auto-sized iframe, viewport units are circular: the frame sizes
     // itself to the content, and the content sizes itself to the frame, so the
-    // app collapses to a sliver. Pin a phone-shaped height instead.
+    // app collapses to a sliver. Pin a real height instead — the device frame's
+    // full 874 when there is room for the frame, otherwise a phone-shaped
+    // fallback. Outside an iframe the stylesheet handles this on its own.
     if (window.self !== window.top) {
       var host = document.getElementById('device');
-      host.style.height = Math.max(window.innerHeight || 0, 812) + 'px';
+      var framed = window.matchMedia('(min-width: 620px) and (min-height: 640px)');
+      var fit = function () {
+        host.style.height = framed.matches ? '874px' : Math.max(window.innerHeight || 0, 812) + 'px';
+      };
+      fit();
+      window.addEventListener('resize', fit);
     }
 
     hydrateArtwork().then(function () {

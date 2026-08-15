@@ -42,6 +42,11 @@
   /* Layout */
   --gutter: 24px;
   --tabbar-h: 80px;
+
+  /* Space reserved for the home indicator. Real devices report it through
+     env(); the showcase frame declares its own so the simulated device
+     behaves the same way. */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Substitute faces. The licensed originals (PP Right Didone / PP Radio
@@ -89,8 +94,8 @@ a { color: inherit; text-decoration: none; }
 
 /* ------------------------------------------------------------------ device */
 
-/* On a phone the app is full-bleed. On a desktop it sits inside a phone shell
-   so the prototype still reads as a mobile app when shared as a link. */
+/* The app's own viewport. Full-bleed by default; showcase.css sizes it into a
+   device frame once there is room for one. */
 #device {
   position: relative;
   width: 100%;
@@ -100,18 +105,6 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
   background: var(--black-1000);
   overflow: hidden;
-}
-
-@media (min-width: 620px) and (min-height: 720px) {
-  body { display: flex; align-items: center; justify-content: center; }
-  #device {
-    width: 402px;
-    height: 874px;
-    max-height: calc(100vh - 48px);
-    border-radius: 46px;
-    border: 1px solid #2e2e2e;
-    box-shadow: 0 0 0 10px #101010, 0 30px 80px rgba(0, 0, 0, .8);
-  }
 }
 
 /* ------------------------------------------------------------- status bar */
@@ -514,7 +507,7 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom, 0px));
+  padding: 14px var(--gutter) calc(14px + var(--safe-bottom));
   background: var(--black-1000);
   border-top: 1px solid var(--black-1000);
   position: relative;
@@ -836,7 +829,7 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
 .files-tabs {
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 0 calc(8px + var(--safe-bottom));
   background: #1c1c1ecc;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);

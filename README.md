@@ -39,6 +39,7 @@ there — a sandboxed embed blocks both.
 | --- | --- |
 | `src/index.html` | App shell |
 | `src/styles.css` | Design tokens transcribed from Figma + all component styles |
+| `src/showcase.css` | Presentation layer — the device frame and stage, not product |
 | `src/score.js` | Procedural music-engraving generator (placeholder score art) |
 | `src/icons.js` | Line-icon set redrawn to match the Figma icon components |
 | `src/data.js` | Seed content — pieces, events, articles, quotes |

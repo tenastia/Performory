@@ -54,6 +54,11 @@
   /* Layout */
   --gutter: 24px;
   --tabbar-h: 80px;
+
+  /* Space reserved for the home indicator. Real devices report it through
+     env(); the showcase frame declares its own so the simulated device
+     behaves the same way. */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Substitute faces. The licensed originals (PP Right Didone / PP Radio
@@ -101,8 +106,8 @@ a { color: inherit; text-decoration: none; }
 
 /* ------------------------------------------------------------------ device */
 
-/* On a phone the app is full-bleed. On a desktop it sits inside a phone shell
-   so the prototype still reads as a mobile app when shared as a link. */
+/* The app's own viewport. Full-bleed by default; showcase.css sizes it into a
+   device frame once there is room for one. */
 #device {
   position: relative;
   width: 100%;
@@ -112,18 +117,6 @@ a { color: inherit; text-decoration: none; }
   margin: 0 auto;
   background: var(--black-1000);
   overflow: hidden;
-}
-
-@media (min-width: 620px) and (min-height: 720px) {
-  body { display: flex; align-items: center; justify-content: center; }
-  #device {
-    width: 402px;
-    height: 874px;
-    max-height: calc(100vh - 48px);
-    border-radius: 46px;
-    border: 1px solid #2e2e2e;
-    box-shadow: 0 0 0 10px #101010, 0 30px 80px rgba(0, 0, 0, .8);
-  }
 }
 
 /* ------------------------------------------------------------- status bar */
@@ -526,7 +519,7 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px var(--gutter) calc(14px + env(safe-area-inset-bottom, 0px));
+  padding: 14px var(--gutter) calc(14px + var(--safe-bottom));
   background: var(--black-1000);
   border-top: 1px solid var(--black-1000);
   position: relative;
@@ -848,7 +841,7 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
 .files-tabs {
   display: flex;
   justify-content: space-around;
-  padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  padding: 8px 0 calc(8px + var(--safe-bottom));
   background: #1c1c1ecc;
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
@@ -915,11 +908,276 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
 /* Marks anything standing in for an asset the design supplies for real. */
 .is-placeholder { position: relative; }
 
+/* =========================================================================
+   showcase.css — the presentation layer around the app.
+
+   This is the frame, not the product: a stage that holds the prototype inside
+   a device so a reviewer sees it as a phone rather than as a web page. It is
+   deliberately separate from styles.css, which is the app's own design system
+   transcribed from Figma — nothing here leaks into the screens.
+
+   Below the framed breakpoints the whole layer collapses and the app runs
+   full-bleed, because a phone frame drawn inside a phone is just a smaller
+   screen.
+   ========================================================================= */
+
+:root {
+  /* A concert-programme palette: ink ground, warm paper type, brass accent.
+     Kept distinct from the app's neutral greys so the device reads as an
+     object sitting on a surface, not as a panel of the same page. */
+  --stage-ground: #0d0c0b;
+  --stage-glow: #1a1815;
+  --stage-rail: #1e1c19;
+  --stage-paper: #e8e3d8;
+  --stage-muted: #8a857c;
+  --stage-faint: #55514a;
+  --stage-brass: #c39b5e;
+}
+
+/* Full-bleed by default — phones, narrow embeds, installed app. A real device
+   draws its own indicator, so the simulated one only exists inside the frame. */
+#stage { min-height: 100%; }
+#stage-caption { display: none; }
+#phone { height: 100%; }
+.home-indicator { display: none; }
+
+/* ---------------------------------------------------- framed presentation */
+
+@media (min-width: 620px) and (min-height: 640px) {
+  body {
+    background:
+      radial-gradient(120% 90% at 50% 0%, var(--stage-glow) 0%, var(--stage-ground) 62%),
+      var(--stage-ground);
+    color: var(--stage-paper);
+  }
+
+  #stage {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(32px, 6vw, 88px);
+    padding: 40px clamp(24px, 5vw, 72px);
+  }
+
+  #phone {
+    position: relative;
+    flex: none;
+    height: auto;
+    padding: 11px;
+    border-radius: 58px;
+    /* Titanium rail: a light top-left edge falling to shadow bottom-right. */
+    background: linear-gradient(150deg, #4a4741 0%, #201e1b 26%, #121110 62%, #38352f 100%);
+    box-shadow:
+      0 2px 3px rgba(255, 255, 255, .1) inset,
+      0 -2px 3px rgba(0, 0, 0, .6) inset,
+      0 42px 90px -24px rgba(0, 0, 0, .9),
+      0 8px 28px -8px rgba(0, 0, 0, .7);
+  }
+
+  /* The screen itself. A simulated device still has a home indicator, so it
+     declares the same bottom safe area a real one reports through env(). */
+  #device {
+    width: 402px;
+    height: min(874px, calc(100dvh - 132px));
+    max-width: none;
+    border-radius: 47px;
+    overflow: hidden;
+    --safe-bottom: 18px;
+  }
+
+  .home-indicator {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .85);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* Dynamic Island, drawn over the app's own status bar. */
+  #phone::after {
+    content: '';
+    position: absolute;
+    top: 23px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 108px;
+    height: 32px;
+    border-radius: 999px;
+    background: #000;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* Side buttons: action + volume on the left, power on the right. */
+  .btn-side {
+    position: absolute;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #3a3730, #17150f);
+    pointer-events: none;
+  }
+  .btn-side.action { left: -3px; top: 112px; height: 30px; }
+  .btn-side.vol-up { left: -3px; top: 168px; height: 56px; }
+  .btn-side.vol-dn { left: -3px; top: 236px; height: 56px; }
+  .btn-side.power  { right: -3px; top: 196px; height: 88px; }
+
+  /* ------------------------------------------------------------- caption */
+
+  #stage-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 34ch;
+    flex: none;
+  }
+
+  .cap-eyebrow {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stage-brass);
+  }
+
+  .cap-title {
+    font-family: var(--serif);
+    font-size: clamp(44px, 5vw, 64px);
+    line-height: .96;
+    letter-spacing: -.02em;
+    margin: 10px 0 0;
+    text-wrap: balance;
+  }
+
+  .cap-lede {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--stage-muted);
+    margin: 14px 0 0;
+  }
+
+  .cap-heading {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stage-faint);
+    margin: 0 0 14px;
+  }
+
+  /* Numbered because this genuinely is a sequence — the flow only makes
+     sense walked in order. */
+  .cap-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .cap-steps li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--stage-paper);
+  }
+  .cap-steps .n {
+    font-variant-numeric: tabular-nums;
+    color: var(--stage-brass);
+    font-size: 12px;
+    padding-top: 2px;
+  }
+  .cap-steps b { font-weight: 500; }
+  .cap-steps span.hint { color: var(--stage-muted); }
+
+  .cap-jump { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-jump a {
+    font-size: 12px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid #2b2822;
+    color: var(--stage-muted);
+    transition: border-color .18s, color .18s, background .18s;
+  }
+  .cap-jump a:hover,
+  .cap-jump a:focus-visible {
+    color: var(--stage-paper);
+    border-color: var(--stage-brass);
+    background: rgba(195, 155, 94, .08);
+  }
+
+  .cap-note {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--stage-faint);
+    border-top: 1px solid #211f1b;
+    padding-top: 18px;
+    margin: 0;
+  }
+  .cap-note b { color: var(--stage-muted); font-weight: 400; }
+
+  :focus-visible { outline: 2px solid var(--stage-brass); outline-offset: 3px; }
+}
+
+/* The caption needs real room; below this the phone stands alone. */
+@media (max-width: 1000px) {
+  #stage-caption { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cap-jump a { transition: none; }
+}
+
 </style>
 </head>
 <body>
-<div id="device">
-  <div id="stack"></div>
+<div id="stage">
+
+  <aside id="stage-caption">
+    <div>
+      <p class="cap-eyebrow">Interactive prototype</p>
+      <h1 class="cap-title">Performory</h1>
+      <p class="cap-lede">A memorization companion for musicians. Every screen is
+        live — upload a score, pick sections, work through fragments, record a take.</p>
+    </div>
+
+    <div>
+      <p class="cap-heading">Walk the flow</p>
+      <ol class="cap-steps">
+        <li><span class="n">01</span><span><b>Practice a piece.</b> Tap a card, then
+          Memorize, choose sections, Start Practice.</span></li>
+        <li><span class="n">02</span><span><b>Record yourself.</b> The mic on the
+          practice screen captures a real take. <span class="hint">Needs microphone
+          permission.</span></span></li>
+        <li><span class="n">03</span><span><b>Add a score.</b> New Piece → From Device.
+          <span class="hint">Pick a photo and it becomes the artwork.</span></span></li>
+      </ol>
+    </div>
+
+    <nav class="cap-jump" aria-label="Jump to a screen">
+      <a href="#/home">Home</a>
+      <a href="#/library">Library</a>
+      <a href="#/piece/brahms-pc1">Piece</a>
+      <a href="#/practice/brahms-pc1">Practice</a>
+      <a href="#/new">New piece</a>
+      <a href="#/profile">Profile</a>
+    </nav>
+
+    <p class="cap-note">Standing in for assets that ship with the design:
+      <b>substitute typefaces</b> and <b>generated score engravings</b>.
+      Progress is stored on this device — reset it under Profile.</p>
+  </aside>
+
+  <div id="phone">
+    <span class="btn-side action"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+    <div id="device">
+      <div id="stack"></div>
+      <span class="home-indicator"></span>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -2647,7 +2905,7 @@ var Screens = (function () {
         gap(8) +
         '<p class="body-xs dim" id="micNote" style="margin:0;height:16px"></p>' +
         '</div>' +
-        '<div style="padding:0 24px calc(48px + env(safe-area-inset-bottom,0px))">' +
+        '<div style="padding:0 24px calc(48px + var(--safe-bottom))">' +
         '<button class="record-btn" id="recBtn" aria-label="Start recording">' +
         Icons.get('mic', { size: 26, sw: 1.5 }) + '</button></div>' +
         '</div>'
@@ -4043,10 +4301,17 @@ var App = (function () {
 
     // Inside an auto-sized iframe, viewport units are circular: the frame sizes
     // itself to the content, and the content sizes itself to the frame, so the
-    // app collapses to a sliver. Pin a phone-shaped height instead.
+    // app collapses to a sliver. Pin a real height instead — the device frame's
+    // full 874 when there is room for the frame, otherwise a phone-shaped
+    // fallback. Outside an iframe the stylesheet handles this on its own.
     if (window.self !== window.top) {
       var host = document.getElementById('device');
-      host.style.height = Math.max(window.innerHeight || 0, 812) + 'px';
+      var framed = window.matchMedia('(min-width: 620px) and (min-height: 640px)');
+      var fit = function () {
+        host.style.height = framed.matches ? '874px' : Math.max(window.innerHeight || 0, 812) + 'px';
+      };
+      fit();
+      window.addEventListener('resize', fit);
     }
 
     hydrateArtwork().then(function () {
