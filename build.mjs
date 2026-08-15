@@ -54,5 +54,15 @@ if (html.includes('<script src=') || html.includes('href="styles.css"')) {
 await mkdir(out, { recursive: true });
 await writeFile(join(out, 'index.html'), html);
 
-const kb = (Buffer.byteLength(html) / 1024).toFixed(0);
-console.log(`dist/index.html — ${kb} KB, no external requests`);
+// Second target: the same page without the document skeleton, for hosts that
+// supply their own <!doctype>/<head>/<body> wrapper.
+const body = html
+  .slice(html.indexOf('<body>') + '<body>'.length, html.indexOf('</body>'))
+  .trim();
+const style = html.slice(html.indexOf('<style>'), html.indexOf('</style>') + '</style>'.length);
+const embed = `<title>Performory</title>\n${style}\n${body}\n`;
+await writeFile(join(out, 'embed.html'), embed);
+
+const kb = (n) => (Buffer.byteLength(n) / 1024).toFixed(0);
+console.log(`dist/index.html — ${kb(html)} KB, no external requests`);
+console.log(`dist/embed.html  — ${kb(embed)} KB, no document skeleton`);

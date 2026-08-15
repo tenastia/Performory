@@ -642,7 +642,9 @@ var Screens = (function () {
       a.click();
       a.remove();
       setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
-      App.toast('Saved ' + last.name);
+      // Sandboxed viewers block page-initiated saves outright, so this cannot
+      // promise the file landed — the take is kept in the app either way.
+      App.toast('Exporting ' + last.name + '…');
     });
   }
 
