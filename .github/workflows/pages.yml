@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - main
-      - claude/performory-ios-prototype-dioxa1
+  pull_request:
   workflow_dispatch:
 
 permissions:
@@ -48,8 +48,12 @@ jobs:
         with:
           path: dist
 
+  # Only the default branch publishes. The github-pages environment restricts
+  # deployments to it anyway, and a branch deploy would overwrite the live site
+  # with unreviewed changes — so pull requests build and verify, nothing more.
   deploy:
     needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
