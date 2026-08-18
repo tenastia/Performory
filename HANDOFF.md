@@ -105,7 +105,8 @@ top of `src/styles.css` as custom properties.
 ### Typography
 
 Serif `PP Right Didone` (narrow light, weight 300) for display; sans
-`PP Radio Grotesk` (ultralight 200 / regular 400) for everything else.
+`PP Radio Grotesk` (ultralight 200 / regular 400) for everything else — see §5
+on the Radio/Right Grotesk discrepancy.
 
 | Style | Size / line-height |
 | --- | --- |
@@ -184,26 +185,26 @@ asset URLs, and both typefaces are commercially licensed.
 
 Each is isolated behind one swap point.
 
-### Fonts
+### Fonts — done
 
-`PP Right Didone` and `PP Radio Grotesk` are Pangram Pangram faces and are not
-redistributable, so the prototype ships free substitutes:
+The design's licensed faces are wired in. `assets/fonts/` holds the full
+supplied set; `build.mjs` embeds three latin subsets as data URIs:
 
-- serif → **Didot** on iOS (a close match, already on the device), falling back
-  to embedded **Bodoni Moda**
-- sans → embedded **Outfit**
+| Design token | File | Weight |
+| --- | --- | --- |
+| `font style/serif`, `narrow light` | PP Right Didone – Narrow Light | 300 |
+| `font style/sans serif`, `ultralight` | PP Right Grotesk – Light | 200 |
+| `font style/sans serif`, `regular` | PP Right Grotesk – Medium | 500 |
 
-**To swap in the real fonts:** drop the `.woff2` files in
-`src/assets/fonts/`, add two `@font-face` blocks naming them `PP Right Didone`
-and `PP Radio Grotesk`, and register them in `build.mjs`'s inline list. Nothing
-else changes — both families are already first in the stacks in `src/styles.css`.
+Weights are declared as the fonts report them rather than as the tokens name
+them, so CSS font matching does the mapping: a requested 400 resolves to Medium
+(500), a requested 200 hits Light exactly, and headings ask for 300 directly.
 
-Two cosmetic compensations exist purely because Bodoni Moda runs wider than
-PP Right Didone's narrow cut, and should be **removed** once the real face is in:
-
-- `-0.015em` letter-spacing and `text-wrap: balance` on `.h3/.h5/.h6`
-- `.piece-card .card-title` overridden to 18/20 with a two-line clamp — the
-  design has it at `headings/h6` (20/20) on a single line
+**One open question.** The Figma token `Typography/font style/sans serif` names
+**PP Radio Grotesk**, but the family supplied is **PP Right Grotesk** — a
+different family from the same foundry. The prototype uses what was supplied.
+If Radio Grotesk is correct, drop those files into `assets/fonts/` and the swap
+is three lines in `styles.css` plus three in `build.mjs`.
 
 ### Score artwork
 

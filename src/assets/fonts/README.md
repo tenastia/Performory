@@ -1,22 +1,24 @@
-# fonts
+# fonts (build inputs)
 
-The design specifies two Pangram Pangram faces, which are licensed and not
-redistributable, so the prototype ships free substitutes instead:
+Latin subsets of the project's licensed faces, converted from the `.otf`
+originals in `/assets/fonts/`. `build.mjs` embeds these as data URIs so the
+prototype stays a single self-contained file.
 
-| Design font | Substitute | Notes |
+| File | Family declared in CSS | Weight |
 | --- | --- | --- |
-| PP Right Didone | Didot on iOS, else Bodoni Moda | serif display |
-| PP Radio Grotesk | Outfit | sans, weights 200/400 |
+| `pp-right-didone-narrow-light.woff2` | `PP Right Didone` | 300 |
+| `pp-right-grotesk-light.woff2` | `PP Right Grotesk` | 200 |
+| `pp-right-grotesk-medium.woff2` | `PP Right Grotesk` | 500 |
 
-## Swapping in the real faces
+Weights are declared as the fonts themselves report them, not as the design
+tokens name them, so CSS font matching resolves the tokens on its own: a
+requested 400 finds Medium (500), a requested 200 finds Light exactly.
 
-1. Drop the `.woff2` files here.
-2. Add an `@font-face` block per weight in `src/styles.css`, naming them exactly
-   `PP Right Didone` and `PP Radio Grotesk` — both are already first in the
-   `--serif` / `--sans` stacks, so nothing else needs to change.
-3. Register each new file in the inline list in `build.mjs`, next to the two
-   substitutes, so it gets embedded as a data URI.
-4. Remove the two compensations that only exist because Bodoni Moda runs wider
-   than PP Right Didone's narrow cut (both flagged in `styles.css`):
-   the letter-spacing on `.h3/.h5/.h6`, and the `.piece-card .card-title`
-   override back to `headings/h6` at 20/20.
+## Regenerating
+
+```
+pyftsubset "assets/fonts/<file>.otf" \
+  --unicodes="U+0020-007F,U+00A0-00FF,U+2010-2027,U+2030-205E,U+20AC,U+2122" \
+  --flavor=woff2 --layout-features='*' --no-hinting --desubroutinize \
+  --output-file="src/assets/fonts/<name>.woff2"
+```

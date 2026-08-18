@@ -3,30 +3,30 @@
 The project's licensed typefaces, as supplied. 30 `.otf` files across two
 Pangram Pangram families.
 
-| Family | Files | Weight the design uses |
+## In use by the prototype
+
+`build.mjs` embeds latin subsets of three weights, converted to `.woff2` and
+kept in `src/assets/fonts/`:
+
+| File here | Weight | Where it is used |
 | --- | --- | --- |
-| PP Right Didone | 14 | `Narrow Light` — serif display (`headings/h3`–`h6`) |
-| PP Right Grotesk | 16 | `Light` and `Medium` — sans (`body/*`, `buttons/*`) |
+| `PP Right Didone - Narrow Light.otf` | 300 | `headings/h3`–`h6` |
+| `PPRightGrotesk-Light.otf` | 200 | `body/*_light` |
+| `PPRightGrotesk-Medium.otf` | 500 | `body/*_regular`, `buttons/*` |
 
-## Two things to resolve before these go into the build
+The remaining 27 files are the rest of both families, kept for future use.
 
-**The sans family does not match the Figma variable.** The design's
-`Typography/font style/sans serif` token names **PP Radio Grotesk**; what is
-supplied here is **PP Right Grotesk** — a different family from the same
-foundry. Confirm which is correct before wiring it in.
+## Open question
 
-**These are `.otf`, and the prototype needs `.woff2`.** OpenType files are far
-larger than a web subset and Safari support is inconsistent. The build embeds
-fonts as data URIs, so each weight needs converting and subsetting to latin
-first.
-
-Until both are settled the prototype keeps its substitute faces — Bodoni Moda
-for the serif (Didot on iOS) and Outfit for the sans. See HANDOFF.md §5 for the
-swap procedure and the two cosmetic compensations to remove once the real
-serif is in.
+The Figma token `Typography/font style/sans serif` names **PP Radio Grotesk**;
+the family supplied here is **PP Right Grotesk** — a different family from the
+same foundry. The prototype uses what was supplied. If Radio Grotesk is the
+correct one, add it here and the swap is three lines in `styles.css` plus three
+in `build.mjs`.
 
 ## Licensing
 
 These are commercial faces in a public repository, which makes them
-downloadable by anyone. Consider making the repo private, or keeping only
-subset `.woff2` files here and the full `.otf` set somewhere access-controlled.
+downloadable by anyone. Consider making the repo private, or keeping only the
+subset `.woff2` files in the repo and the full `.otf` set somewhere
+access-controlled.
