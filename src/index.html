@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Performory</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="description" content="Interactive prototype of Performory — a memorization companion for musicians.">
+<meta name="theme-color" content="#191919">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Performory">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="showcase.css">
+</head>
+<body>
+<div id="stage">
+
+  <aside id="stage-caption">
+    <div>
+      <p class="cap-eyebrow">Interactive prototype</p>
+      <h1 class="cap-title">Performory</h1>
+      <p class="cap-lede">A memorization companion for musicians. Every screen is
+        live — upload a score, pick sections, work through fragments, record a take.</p>
+    </div>
+
+    <div>
+      <p class="cap-heading">Walk the flow</p>
+      <ol class="cap-steps">
+        <li><span class="n">01</span><span><b>Practice a piece.</b> Tap a card, then
+          Memorize, choose sections, Start Practice.</span></li>
+        <li><span class="n">02</span><span><b>Record yourself.</b> The mic on the
+          practice screen captures a real take. <span class="hint">Needs microphone
+          permission.</span></span></li>
+        <li><span class="n">03</span><span><b>Add a score.</b> New Piece → From Device.
+          <span class="hint">Pick a photo and it becomes the artwork.</span></span></li>
+      </ol>
+    </div>
+
+    <nav class="cap-jump" aria-label="Jump to a screen">
+      <a href="#/home">Home</a>
+      <a href="#/library">Library</a>
+      <a href="#/piece/brahms-pc1">Piece</a>
+      <a href="#/practice/brahms-pc1">Practice</a>
+      <a href="#/new">New piece</a>
+      <a href="#/profile">Profile</a>
+    </nav>
+
+    <p class="cap-note">Standing in for assets that ship with the design:
+      <b>substitute typefaces</b> and <b>generated score engravings</b>.
+      Progress is stored on this device — reset it under Profile.</p>
+  </aside>
+
+  <div id="phone">
+    <span class="btn-side action"></span>
+    <span class="btn-side vol-up"></span>
+    <span class="btn-side vol-dn"></span>
+    <span class="btn-side power"></span>
+    <div id="device">
+      <div id="stack"></div>
+      <span class="home-indicator"></span>
+    </div>
+  </div>
+
+</div>
+
+<script src="score.js"></script>
+<script src="icons.js"></script>
+<script src="data.js"></script>
+<script src="ui.js"></script>
+<script src="screens.js"></script>
+<script src="app.js"></script>
+<script>App.boot();</script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+/* =========================================================================
+   showcase.css — the presentation layer around the app.
+
+   This is the frame, not the product: a stage that holds the prototype inside
+   a device so a reviewer sees it as a phone rather than as a web page. It is
+   deliberately separate from styles.css, which is the app's own design system
+   transcribed from Figma — nothing here leaks into the screens.
+
+   Below the framed breakpoints the whole layer collapses and the app runs
+   full-bleed, because a phone frame drawn inside a phone is just a smaller
+   screen.
+   ========================================================================= */
+
+:root {
+  /* A concert-programme palette: ink ground, warm paper type, brass accent.
+     Kept distinct from the app's neutral greys so the device reads as an
+     object sitting on a surface, not as a panel of the same page. */
+  --stage-ground: #0d0c0b;
+  --stage-glow: #1a1815;
+  --stage-rail: #1e1c19;
+  --stage-paper: #e8e3d8;
+  --stage-muted: #8a857c;
+  --stage-faint: #55514a;
+  --stage-brass: #c39b5e;
+}
+
+/* Full-bleed by default — phones, narrow embeds, installed app. A real device
+   draws its own indicator, so the simulated one only exists inside the frame. */
+#stage { min-height: 100%; }
+#stage-caption { display: none; }
+#phone { height: 100%; }
+.home-indicator { display: none; }
+
+/* ---------------------------------------------------- framed presentation */
+
+@media (min-width: 620px) and (min-height: 640px) {
+  body {
+    background:
+      radial-gradient(120% 90% at 50% 0%, var(--stage-glow) 0%, var(--stage-ground) 62%),
+      var(--stage-ground);
+    color: var(--stage-paper);
+  }
+
+  #stage {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(32px, 6vw, 88px);
+    padding: 40px clamp(24px, 5vw, 72px);
+  }
+
+  #phone {
+    position: relative;
+    flex: none;
+    height: auto;
+    padding: 11px;
+    border-radius: 58px;
+    /* Titanium rail: a light top-left edge falling to shadow bottom-right. */
+    background: linear-gradient(150deg, #4a4741 0%, #201e1b 26%, #121110 62%, #38352f 100%);
+    box-shadow:
+      0 2px 3px rgba(255, 255, 255, .1) inset,
+      0 -2px 3px rgba(0, 0, 0, .6) inset,
+      0 42px 90px -24px rgba(0, 0, 0, .9),
+      0 8px 28px -8px rgba(0, 0, 0, .7);
+  }
+
+  /* The screen itself. A simulated device still has a home indicator, so it
+     declares the same bottom safe area a real one reports through env(). */
+  #device {
+    width: 402px;
+    height: min(874px, calc(100dvh - 132px));
+    max-width: none;
+    border-radius: 47px;
+    overflow: hidden;
+    --safe-bottom: 18px;
+  }
+
+  .home-indicator {
+    display: block;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .85);
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* Dynamic Island, drawn over the app's own status bar. */
+  #phone::after {
+    content: '';
+    position: absolute;
+    top: 23px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 108px;
+    height: 32px;
+    border-radius: 999px;
+    background: #000;
+    pointer-events: none;
+    z-index: 20;
+  }
+
+  /* Side buttons: action + volume on the left, power on the right. */
+  .btn-side {
+    position: absolute;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #3a3730, #17150f);
+    pointer-events: none;
+  }
+  .btn-side.action { left: -3px; top: 112px; height: 30px; }
+  .btn-side.vol-up { left: -3px; top: 168px; height: 56px; }
+  .btn-side.vol-dn { left: -3px; top: 236px; height: 56px; }
+  .btn-side.power  { right: -3px; top: 196px; height: 88px; }
+
+  /* ------------------------------------------------------------- caption */
+
+  #stage-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 34ch;
+    flex: none;
+  }
+
+  .cap-eyebrow {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stage-brass);
+  }
+
+  .cap-title {
+    font-family: var(--serif);
+    font-size: clamp(44px, 5vw, 64px);
+    line-height: .96;
+    letter-spacing: -.02em;
+    margin: 10px 0 0;
+    text-wrap: balance;
+  }
+
+  .cap-lede {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--stage-muted);
+    margin: 14px 0 0;
+  }
+
+  .cap-heading {
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--stage-faint);
+    margin: 0 0 14px;
+  }
+
+  /* Numbered because this genuinely is a sequence — the flow only makes
+     sense walked in order. */
+  .cap-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .cap-steps li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--stage-paper);
+  }
+  .cap-steps .n {
+    font-variant-numeric: tabular-nums;
+    color: var(--stage-brass);
+    font-size: 12px;
+    padding-top: 2px;
+  }
+  .cap-steps b { font-weight: 500; }
+  .cap-steps span.hint { color: var(--stage-muted); }
+
+  .cap-jump { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cap-jump a {
+    font-size: 12px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    border: 1px solid #2b2822;
+    color: var(--stage-muted);
+    transition: border-color .18s, color .18s, background .18s;
+  }
+  .cap-jump a:hover,
+  .cap-jump a:focus-visible {
+    color: var(--stage-paper);
+    border-color: var(--stage-brass);
+    background: rgba(195, 155, 94, .08);
+  }
+
+  .cap-note {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--stage-faint);
+    border-top: 1px solid #211f1b;
+    padding-top: 18px;
+    margin: 0;
+  }
+  .cap-note b { color: var(--stage-muted); font-weight: 400; }
+
+  :focus-visible { outline: 2px solid var(--stage-brass); outline-offset: 3px; }
+}
+
+/* The caption needs real room; below this the phone stands alone. */
+@media (max-width: 1000px) {
+  #stage-caption { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cap-jump a { transition: none; }
+}
