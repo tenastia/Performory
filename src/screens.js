@@ -120,12 +120,12 @@ var Screens = (function () {
       '<div class="veil"></div>' + overlay +
       (opts.edit !== false
         ? '<button class="icon-btn" data-act="edit-art" style="position:absolute;left:12px;top:12px" ' +
-          'aria-label="Edit artwork">' + Icons.get('edit', { size: 14 }) + '</button>'
+          'aria-label="Edit artwork">' + Icons.get('edit', { size: 24 }) + '</button>'
         : '') +
       '<button class="chip" data-act="toggle-sections" style="position:absolute;right:12px;top:12px">' +
       '<span>Identified Sections</span>' +
       '<span style="display:inline-flex;align-items:center;gap:6px;background:#292929;border-radius:4px;' +
-      'padding:2px 6px">' + esc(draft.sections) + ' ' + Icons.get('eye', { size: 13 }) + '</span>' +
+      'padding:2px 6px">' + esc(draft.sections) + ' ' + Icons.get('eye', { size: 18 }) + '</span>' +
       '</button>' +
       (opts.field
         ? '<div class="hero-field"><input class="field" id="titleField" placeholder="Type in the title*" ' +
@@ -200,7 +200,7 @@ var Screens = (function () {
           '<div class="article-strip" id="artStrip">' +
           Data.articles.map(function (a, i) {
             return '<button class="article-card" data-act="article" data-id="' + esc(a.id) + '">' +
-              '<div class="article-art">' + Data.articleArt(a.hue, i + 1) + '</div>' +
+              '<div class="article-art">' + Data.articleArt(a.hue, i + 1, a.cover) + '</div>' +
               '<div class="date body-xs">' + esc(a.date) + '</div>' +
               '<div class="head">' + esc(a.title) + '</div></button>';
           }).join('') +
@@ -442,7 +442,7 @@ var Screens = (function () {
           '<div class="thumb">' + Score.svg({ width: 130, height: 150, seed: seed, space: 5, ink: '#111' }) + '</div>' +
           '<div class="meta"><div><div class="body-s">' + pct + '%</div>' +
           '<div class="body-xs dim">Memorized</div></div>' +
-          '<span class="dim">' + Icons.get('dotsV', { size: 14 }) + '</span></div></div>' +
+          '<span class="dim">' + Icons.get('dotsV', { size: 18 }) + '</span></div></div>' +
           '<div class="body-s" style="text-align:center;margin-top:12px">' + esc(label) + '</div>' +
           '<div class="center" style="margin-top:8px"><span class="radio ' + extraClass + '">' +
           (key === 'all' ? '' : key) + '</span></div></div>'
@@ -539,7 +539,7 @@ var Screens = (function () {
           '<div style="display:flex;align-items:center;gap:12px">' +
           '<span class="body-md">Sections</span>' +
           '<button class="chip" data-act="edit-sections">' + esc(label) + ' ' +
-          Icons.get('edit', { size: 13 }) + '</button></div>' +
+          Icons.get('edit', { size: 20 }) + '</button></div>' +
           '<span class="body-md">' + pct + '%</span></div>' +
           gap(22) +
           '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
@@ -562,11 +562,11 @@ var Screens = (function () {
           gap(28) +
           '<div class="practice-tools">' +
           '<button class="tool-btn" data-act="save-rec" ' + (s.recordings.length ? '' : 'disabled') +
-          ' aria-label="Download recording">' + Icons.get('download', { size: 18 }) + '</button>' +
+          ' aria-label="Download recording">' + Icons.get('download') + '</button>' +
           '<button class="tool-btn" data-act="record" aria-label="Record">' +
-          Icons.get('mic', { size: 18 }) + '</button>' +
+          Icons.get('mic') + '</button>' +
           '<button class="tool-btn" data-act="play" ' + (s.recordings.length ? '' : 'disabled') +
-          ' aria-label="Play recording">' + Icons.get('play', { size: 18 }) + '</button>' +
+          ' aria-label="Play recording">' + Icons.get('play') + '</button>' +
           '</div>' +
           gap(24),
           'pad-bottom'
@@ -1355,7 +1355,7 @@ var Screens = (function () {
         scrollArea(
           gap(16) +
           '<div class="pad-x"><div class="article-art" style="height:220px">' +
-          Data.articleArt(a.hue, idx + 1) + '</div></div>' +
+          Data.articleArt(a.hue, idx + 1, a.cover) + '</div></div>' +
           gap(20) +
           '<p class="body-xs dim pad-x" style="margin:0">' + esc(a.date) + '</p>' +
           gap(8) +

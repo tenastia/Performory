@@ -200,11 +200,33 @@ Weights are declared as the fonts report them rather than as the tokens name
 them, so CSS font matching does the mapping: a requested 400 resolves to Medium
 (500), a requested 200 hits Light exactly, and headings ask for 300 directly.
 
-**One open question.** The Figma token `Typography/font style/sans serif` names
+**Two open questions.** The Figma token `Typography/font style/sans serif` names
 **PP Radio Grotesk**, but the family supplied is **PP Right Grotesk** — a
 different family from the same foundry. The prototype uses what was supplied.
 If Radio Grotesk is correct, drop those files into `assets/fonts/` and the swap
 is three lines in `styles.css` plus three in `build.mjs`.
+
+Related, and visible: the supplied Right Grotesk has no **400** at normal
+width — only Light (200) and Medium (500). Every token asking for `regular`
+therefore renders at 500, which reads heavy in long text such as the article
+body. A Regular weight would fix it, and PP Radio Grotesk very likely has one.
+
+### Icons — done
+
+`src/icons.js` serves the 19 exported glyphs from `/assets`, with their
+exported fills and strokes rewritten to `currentColor` so one glyph works
+white on the active tab, grey when inactive, and dark on a white button.
+
+Twelve glyphs the export set does not include are still drawn by hand in the
+same file, grouped under `drawn` and labelled: chevrons, check, search, stop,
+clock, bell, logout, folder, and the celebration drum.
+
+### Article covers — done
+
+`story-cover-one/two.jpg` are wired to the first two articles, re-encoded to
+31 KB and 22 KB and embedded by `build.mjs`. The third article still uses the
+generated fallback; `Data.articleArt()` prefers a supplied cover and only
+generates when there is none.
 
 ### Score artwork
 

@@ -48,11 +48,11 @@ var UI = (function () {
     o = o || {};
     var left = o.left
       ? '<button class="icon-btn" data-act="' + esc(o.left.act) + '" aria-label="' + esc(o.left.label) + '">' +
-        Icons.get(o.left.icon, { size: o.left.icon === 'ellipsis' ? 12 : 14 }) + '</button>'
+        Icons.get(o.left.icon) + '</button>'
       : '<span style="width:28px"></span>';
     var right = o.right
       ? '<button class="icon-btn" data-act="' + esc(o.right.act) + '" aria-label="' + esc(o.right.label) + '">' +
-        Icons.get(o.right.icon, { size: o.right.icon === 'close' ? 12 : 14 }) + '</button>'
+        Icons.get(o.right.icon) + '</button>'
       : '<span style="width:28px"></span>';
 
     return (
@@ -80,7 +80,7 @@ var UI = (function () {
         return (
           '<button class="' + (t.id === active ? 'on' : '') + '" data-tab="' + t.route + '"' +
           (t.id === active ? ' aria-current="page"' : '') + '>' +
-          Icons.get(t.icon, { size: 24, sw: 1.3 }) +
+          Icons.get(t.icon) +
           '<span>' + t.label + '</span></button>'
         );
       }).join('') +
@@ -181,13 +181,13 @@ var UI = (function () {
       '<div class="event-date"><div class="d">' + esc(ev.d) + '</div><div class="m">' + esc(ev.m) + '</div></div>' +
       '<div class="event-sep"></div>' +
       '<div class="event-main">' +
-      '<div class="event-venue body-xs">' + Icons.get('pin', { size: 12 }) + '<span>' + esc(ev.venue) + '</span></div>' +
+      '<div class="event-venue body-xs">' + Icons.get('pin') + '<span>' + esc(ev.venue) + '</span></div>' +
       '<div class="body-s">' + esc(ev.title) + '</div>' +
       '</div>' +
       '<div class="event-actions">' +
-      '<button class="icon-btn ghost" aria-label="Event options">' + Icons.get('dotsV', { size: 14 }) + '</button>' +
+      '<button class="icon-btn ghost" aria-label="Event options">' + Icons.get('dotsV', { size: 20 }) + '</button>' +
       '<button class="icon-btn" data-act="add-event" data-id="' + esc(ev.id) + '" aria-label="Add to calendar">' +
-      Icons.get('plus', { size: 14 }) + '</button>' +
+      Icons.get('plus', { size: 22 }) + '</button>' +
       '</div></div>'
     );
   }

@@ -41,6 +41,14 @@ const scripts = ['score.js', 'icons.js', 'data.js', 'ui.js', 'screens.js', 'app.
 const js = [];
 for (const s of scripts) js.push(await read(s));
 
+// Cover images referenced from data.js → data URIs, same reason as the fonts.
+for (const file of ['assets/covers/story-one.jpg', 'assets/covers/story-two.jpg']) {
+  const uri = await dataUri(file, 'image/jpeg');
+  const before = js.join('');
+  for (let i = 0; i < js.length; i++) js[i] = js[i].split(`'${file}'`).join(`'${uri}'`);
+  if (before === js.join('')) throw new Error(`cover not inlined: ${file}`);
+}
+
 html = html
   .replace('<link rel="stylesheet" href="styles.css">', `<style>\n${css}\n</style>`)
   .replace('<link rel="stylesheet" href="showcase.css">\n', '')
