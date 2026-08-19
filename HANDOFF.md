@@ -185,31 +185,26 @@ asset URLs, and both typefaces are commercially licensed.
 
 Each is isolated behind one swap point.
 
-### Fonts — done
+### Fonts — serif done, sans placeholder
 
-The design's licensed faces are wired in. `assets/fonts/` holds the full
-supplied set; `build.mjs` embeds three latin subsets as data URIs:
+| Design token | Font | Weight | Status |
+| --- | --- | --- | --- |
+| `font style/serif`, `narrow light` | PP Right Didone – Narrow Light | 300 | licensed |
+| `font style/sans serif` | Outfit (variable 100–900) | — | **placeholder** |
 
-| Design token | File | Weight |
-| --- | --- | --- |
-| `font style/serif`, `narrow light` | PP Right Didone – Narrow Light | 300 |
-| `font style/sans serif`, `ultralight` | PP Right Grotesk – Light | 200 |
-| `font style/sans serif`, `regular` | PP Right Grotesk – Medium | 500 |
+The serif is the real licensed face, declared at the weight the font reports so
+the headings' token weight of 300 resolves directly.
 
-Weights are declared as the fonts report them rather than as the tokens name
-them, so CSS font matching does the mapping: a requested 400 resolves to Medium
-(500), a requested 200 hits Light exactly, and headings ask for 300 directly.
+**The sans is not the design's face.** The token names **PP Radio Grotesk**,
+which has not been supplied. PP Right Grotesk was uploaded instead — a
+different family from the same foundry — and has been removed from the
+repository: besides being the wrong family, it carried no 400 at normal width,
+so every `regular` token rendered at 500 and read heavy in long text.
 
-**Two open questions.** The Figma token `Typography/font style/sans serif` names
-**PP Radio Grotesk**, but the family supplied is **PP Right Grotesk** — a
-different family from the same foundry. The prototype uses what was supplied.
-If Radio Grotesk is correct, drop those files into `assets/fonts/` and the swap
-is three lines in `styles.css` plus three in `build.mjs`.
-
-Related, and visible: the supplied Right Grotesk has no **400** at normal
-width — only Light (200) and Medium (500). Every token asking for `regular`
-therefore renders at 500, which reads heavy in long text such as the article
-body. A Regular weight would fix it, and PP Radio Grotesk very likely has one.
+Outfit stands in until Radio Grotesk arrives. It is variable across 100–900, so
+both weights the tokens ask for resolve to real instances. `PP Radio Grotesk`
+is already first in the `--sans` stack; see `src/assets/fonts/README.md` for
+the swap.
 
 ### Icons — done
 

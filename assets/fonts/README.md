@@ -1,32 +1,30 @@
 # fonts
 
-The project's licensed typefaces, as supplied. 30 `.otf` files across two
-Pangram Pangram families.
+The project's licensed typefaces, as supplied.
 
-## In use by the prototype
+## PP Right Didone — in use
 
-`build.mjs` embeds latin subsets of three weights, converted to `.woff2` and
-kept in `src/assets/fonts/`:
+14 `.otf` weights. The prototype uses **Narrow Light** (weight 300, narrow
+width), which is exactly what the `headings/h3`–`h6` tokens specify. It is
+subset to latin, converted to `.woff2` in `src/assets/fonts/`, and embedded by
+`build.mjs`.
 
-| File here | Weight | Where it is used |
-| --- | --- | --- |
-| `PP Right Didone - Narrow Light.otf` | 300 | `headings/h3`–`h6` |
-| `PPRightGrotesk-Light.otf` | 200 | `body/*_light` |
-| `PPRightGrotesk-Medium.otf` | 500 | `body/*_regular`, `buttons/*` |
+## PP Radio Grotesk — missing
 
-The remaining 27 files are the rest of both families, kept for future use.
+The design's `Typography/font style/sans serif` token names **PP Radio
+Grotesk**. Those files are not in the repository, so the prototype uses a
+clearly-marked stand-in (Outfit) for all sans text.
 
-## Open question
+Drop the `.woff2` files here to fix it — see `src/assets/fonts/README.md` for
+the four-step swap. The family is already first in the `--sans` stack, so it
+takes over as soon as the files exist.
 
-The Figma token `Typography/font style/sans serif` names **PP Radio Grotesk**;
-the family supplied here is **PP Right Grotesk** — a different family from the
-same foundry. The prototype uses what was supplied. If Radio Grotesk is the
-correct one, add it here and the swap is three lines in `styles.css` plus three
-in `build.mjs`.
+PP Right Grotesk was removed: it is a different family from the same foundry,
+uploaded by mistake, and it had no 400 weight at normal width, which made every
+`regular` token render too heavy.
 
 ## Licensing
 
 These are commercial faces in a public repository, which makes them
 downloadable by anyone. Consider making the repo private, or keeping only the
-subset `.woff2` files in the repo and the full `.otf` set somewhere
-access-controlled.
+subset `.woff2` files here and the full `.otf` set somewhere access-controlled.

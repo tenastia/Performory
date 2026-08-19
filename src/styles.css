@@ -23,7 +23,7 @@
 
   /* Typography */
   --serif: 'PP Right Didone', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
-  --sans: 'PP Right Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --sans: 'PP Radio Grotesk', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   --h3: 32px;   --h3-lh: 36px;
   --h5: 24px;   --h5-lh: 24px;
@@ -49,10 +49,9 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* The licensed faces, subset to latin and embedded by build.mjs.
-   Weights are declared as the fonts actually report them, so CSS font matching
-   resolves the design's tokens on its own: a requested 400 finds Medium (500),
-   a requested 200 finds Light exactly, and the headings ask for 300 directly. */
+/* Serif: the licensed PP Right Didone, subset to latin and embedded by
+   build.mjs. Its weight is declared as the font reports it, so the headings'
+   token weight of 300 resolves directly. */
 @font-face {
   font-family: 'PP Right Didone';
   font-style: normal;
@@ -60,19 +59,23 @@
   font-display: swap;
   src: url('assets/fonts/pp-right-didone-narrow-light.woff2') format('woff2');
 }
+
+/* Sans: PLACEHOLDER. The design specifies PP Radio Grotesk, which has not been
+   supplied, so Outfit stands in — a geometric grotesk of similar proportion.
+   It is variable across 100–900, so every weight the tokens ask for (200
+   ultralight, 400 regular) resolves to a real instance rather than the nearest
+   available one.
+
+   To swap: drop the PP Radio Grotesk .woff2 files into src/assets/fonts/, add
+   an @font-face per weight naming the family exactly 'PP Radio Grotesk',
+   register them in build.mjs, and delete this block. The family is already
+   first in --sans, so nothing else changes. */
 @font-face {
-  font-family: 'PP Right Grotesk';
+  font-family: 'Outfit';
   font-style: normal;
-  font-weight: 200;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('assets/fonts/pp-right-grotesk-light.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'PP Right Grotesk';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('assets/fonts/pp-right-grotesk-medium.woff2') format('woff2');
+  src: url('assets/fonts/outfit-substitute.woff2') format('woff2');
 }
 
 * { box-sizing: border-box; }

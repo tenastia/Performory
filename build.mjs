@@ -29,8 +29,7 @@ let css = (await read('styles.css')) + '\n' + (await read('showcase.css'));
 // Fonts → data URIs so the page has zero external requests.
 for (const [file, family] of [
   ['assets/fonts/pp-right-didone-narrow-light.woff2', 'PP Right Didone'],
-  ['assets/fonts/pp-right-grotesk-light.woff2', 'PP Right Grotesk Light'],
-  ['assets/fonts/pp-right-grotesk-medium.woff2', 'PP Right Grotesk Medium']
+  ['assets/fonts/outfit-substitute.woff2', 'Outfit (stands in for PP Radio Grotesk)']
 ]) {
   const uri = await dataUri(file, 'font/woff2');
   css = css.replace(`url('${file}') format('woff2')`, `url(${uri}) format('woff2')`);
