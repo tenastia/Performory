@@ -1,0 +1,22 @@
+# Netlify build configuration.
+#
+# The repository root holds only sources; the page a browser should open is
+# produced by `node build.mjs`, which inlines src/ into a single self-contained
+# dist/index.html. Without this file Netlify publishes the root, finds no
+# index.html and serves its "Page not found" screen.
+
+[build]
+  command = "node build.mjs"
+  publish = "dist"
+
+[build.environment]
+  # build.mjs is an ES module using node: imports — any modern Node will do,
+  # but pin it so a change to Netlify's default cannot break the deploy.
+  NODE_VERSION = "22"
+
+# The prototype routes on the URL hash, so every path is the same document.
+# This keeps a hard refresh or a shared deep link from 404ing.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
