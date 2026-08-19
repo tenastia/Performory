@@ -107,7 +107,7 @@ var Data = (function () {
 
   var articles = [
     {
-      id: 'a1', date: 'Aug 16', hue: 34,
+      id: 'a1', date: 'Aug 16', hue: 34, cover: 'assets/covers/story-one.jpg',
       title: 'The Role of Cortisol in Stage Fright: Understanding the Stress Response',
       body: 'Cortisol is the body\'s primary stress hormone, and the surge you feel in the ' +
         'minutes before walking on stage is the same response that once helped us outrun ' +
@@ -121,7 +121,7 @@ var Data = (function () {
         'arrives as a familiar guest rather than an ambush.'
     },
     {
-      id: 'a2', date: 'Aug 16', hue: 208,
+      id: 'a2', date: 'Aug 16', hue: 208, cover: 'assets/covers/story-two.jpg',
       title: 'Practising in the Dark: What Memory Does When You Remove the Score',
       body: 'Removing the score forces retrieval rather than recognition, and retrieval is ' +
         'what builds durable memory. The uncomfortable blank you hit two bars in is not a ' +
@@ -161,9 +161,16 @@ var Data = (function () {
     { kind: 'zip', name: '1440x2560_lasvegas_3_t...da_v01', sub: '22/05/24\n1,5 MB' }
   ];
 
-  /* Abstract cover art standing in for the rendered 3D illustrations in the
-     design. Deterministic per article so covers stay stable across renders. */
-  function articleArt(hue, seed) {
+  /**
+   * Cover art for an article. Uses the supplied export when the article has
+   * one; the generated fallback covers articles that were not exported.
+   * Deterministic per article, so generated covers stay stable across renders.
+   */
+  function articleArt(hue, seed, cover) {
+    if (cover) {
+      return '<img src="' + cover + '" alt="" ' +
+        'style="width:100%;height:100%;object-fit:cover;display:block">';
+    }
     var s = seed || 1;
     var blobs = '';
     for (var i = 0; i < 5; i++) {

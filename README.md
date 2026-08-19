@@ -25,12 +25,24 @@ During development you can skip the build and open `src/index.html` directly.
 
 ## Publishing it publicly
 
-`.github/workflows/pages.yml` rebuilds `dist/` and publishes it to GitHub Pages
-on every push to `main` or the prototype branch. Enable it once in
-**Settings → Pages → Source: GitHub Actions**; after that the run's summary
-shows the public URL.
+Two hosts are wired up, and both run the same `node build.mjs` and serve
+`dist/`.
 
-A Pages URL is a real HTTPS origin, so the microphone and persistent state work
+**Netlify** — `netlify.toml` sets `publish = "dist"`, which is the whole fix
+for the "Page not found" screen: the repository root holds only sources, so
+without it Netlify looks for an `index.html` that is not there. Every pull
+request gets a deploy preview at
+`https://deploy-preview-<number>--performory.netlify.app`, and `main` publishes
+to the project's own URL. A catch-all `200` redirect to `/index.html` keeps a
+hard refresh on a deep link from 404ing, since the prototype routes on the URL
+hash.
+
+**GitHub Pages** — `.github/workflows/pages.yml` builds on every push and pull
+request, but only pushes to `main` deploy (the `github-pages` environment
+rejects deploys from other branches). Enable it once in **Settings → Pages →
+Source: GitHub Actions**; after that the run's summary shows the public URL.
+
+Either URL is a real HTTPS origin, so the microphone and persistent state work
 there — a sandboxed embed blocks both.
 
 ## Layout
@@ -47,6 +59,7 @@ there — a sandboxed embed blocks both.
 | `src/screens.js` | One entry per Figma frame |
 | `src/app.js` | State, persistence, router, device integrations |
 | `build.mjs` | Inlines everything into `dist/index.html` |
+| `netlify.toml` | Netlify build command, publish directory and hash-route redirect |
 
 ## Handoff
 

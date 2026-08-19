@@ -28,8 +28,8 @@ let css = (await read('styles.css')) + '\n' + (await read('showcase.css'));
 
 // Fonts → data URIs so the page has zero external requests.
 for (const [file, family] of [
-  ['assets/fonts/outfit-latin.woff2', 'Outfit'],
-  ['assets/fonts/bodoni-moda-latin.woff2', 'Bodoni Moda']
+  ['assets/fonts/pp-right-didone-narrow-light.woff2', 'PP Right Didone'],
+  ['assets/fonts/outfit-substitute.woff2', 'Outfit (stands in for PP Radio Grotesk)']
 ]) {
   const uri = await dataUri(file, 'font/woff2');
   css = css.replace(`url('${file}') format('woff2')`, `url(${uri}) format('woff2')`);
@@ -39,6 +39,14 @@ for (const [file, family] of [
 const scripts = ['score.js', 'icons.js', 'data.js', 'ui.js', 'screens.js', 'app.js'];
 const js = [];
 for (const s of scripts) js.push(await read(s));
+
+// Cover images referenced from data.js → data URIs, same reason as the fonts.
+for (const file of ['assets/covers/story-one.jpg', 'assets/covers/story-two.jpg']) {
+  const uri = await dataUri(file, 'image/jpeg');
+  const before = js.join('');
+  for (let i = 0; i < js.length; i++) js[i] = js[i].split(`'${file}'`).join(`'${uri}'`);
+  if (before === js.join('')) throw new Error(`cover not inlined: ${file}`);
+}
 
 html = html
   .replace('<link rel="stylesheet" href="styles.css">', `<style>\n${css}\n</style>`)

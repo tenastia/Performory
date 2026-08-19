@@ -22,7 +22,7 @@
   --muted:      #a8a8a8;   /* section labels          */
 
   /* Typography */
-  --serif: 'PP Right Didone', 'Didot', 'Bodoni Moda', 'Bodoni 72', 'Times New Roman', serif;
+  --serif: 'PP Right Didone', 'Didot', 'Bodoni 72', 'Times New Roman', serif;
   --sans: 'PP Radio Grotesk', 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   --h3: 32px;   --h3-lh: 36px;
@@ -49,23 +49,33 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Substitute faces. The licensed originals (PP Right Didone / PP Radio
-   Grotesk) are listed first in the stacks above, so dropping the real webfonts
-   in takes effect immediately — see HANDOFF.md. On iOS the serif resolves to
-   Didot before it ever reaches the embedded Bodoni fallback. */
+/* Serif: the licensed PP Right Didone, subset to latin and embedded by
+   build.mjs. Its weight is declared as the font reports it, so the headings'
+   token weight of 300 resolves directly. */
+@font-face {
+  font-family: 'PP Right Didone';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('assets/fonts/pp-right-didone-narrow-light.woff2') format('woff2');
+}
+
+/* Sans: PLACEHOLDER. The design specifies PP Radio Grotesk, which has not been
+   supplied, so Outfit stands in — a geometric grotesk of similar proportion.
+   It is variable across 100–900, so every weight the tokens ask for (200
+   ultralight, 400 regular) resolves to a real instance rather than the nearest
+   available one.
+
+   To swap: drop the PP Radio Grotesk .woff2 files into src/assets/fonts/, add
+   an @font-face per weight naming the family exactly 'PP Radio Grotesk',
+   register them in build.mjs, and delete this block. The family is already
+   first in --sans, so nothing else changes. */
 @font-face {
   font-family: 'Outfit';
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url('assets/fonts/outfit-latin.woff2') format('woff2');
-}
-@font-face {
-  font-family: 'Bodoni Moda';
-  font-style: normal;
-  font-weight: 400 900;
-  font-display: swap;
-  src: url('assets/fonts/bodoni-moda-latin.woff2') format('woff2');
+  src: url('assets/fonts/outfit-substitute.woff2') format('woff2');
 }
 
 * { box-sizing: border-box; }
@@ -180,15 +190,10 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
 
 /* ------------------------------------------------------------- typography */
 
-/* The substitute serif (Bodoni Moda) runs wider than PP Right Didone's narrow
-   cut, so headings get a touch of negative tracking and balanced wrapping.
-   Both are cosmetic compensations — drop the real face in and they stop
-   mattering. */
 .h3, .h5, .h6 {
   font-family: var(--serif);
-  font-weight: 400;
+  font-weight: 300;
   margin: 0;
-  letter-spacing: -.015em;
   text-wrap: balance;
 }
 .h3 { font-size: var(--h3); line-height: var(--h3-lh); }
@@ -362,13 +367,9 @@ body.standalone .statusbar { visibility: hidden; height: env(safe-area-inset-top
   position: absolute;
   left: 15px;
   right: 15px;
-  top: 248px;
+  top: 260px;
   text-align: center;
   color: var(--white);
-  font-size: 18px;
-  line-height: 20px;
-  max-height: 40px;
-  overflow: hidden;
 }
 .piece-card .card-rings { position: absolute; left: 0; right: 0; top: 178px; }
 .piece-card .card-cta { position: absolute; left: 16px; right: 16px; top: 304px; }

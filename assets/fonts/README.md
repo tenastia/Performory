@@ -1,32 +1,30 @@
 # fonts
 
-The project's licensed typefaces, as supplied. 30 `.otf` files across two
-Pangram Pangram families.
+The project's licensed typefaces, as supplied.
 
-| Family | Files | Weight the design uses |
-| --- | --- | --- |
-| PP Right Didone | 14 | `Narrow Light` — serif display (`headings/h3`–`h6`) |
-| PP Right Grotesk | 16 | `Light` and `Medium` — sans (`body/*`, `buttons/*`) |
+## PP Right Didone — in use
 
-## Two things to resolve before these go into the build
+14 `.otf` weights. The prototype uses **Narrow Light** (weight 300, narrow
+width), which is exactly what the `headings/h3`–`h6` tokens specify. It is
+subset to latin, converted to `.woff2` in `src/assets/fonts/`, and embedded by
+`build.mjs`.
 
-**The sans family does not match the Figma variable.** The design's
-`Typography/font style/sans serif` token names **PP Radio Grotesk**; what is
-supplied here is **PP Right Grotesk** — a different family from the same
-foundry. Confirm which is correct before wiring it in.
+## PP Radio Grotesk — missing
 
-**These are `.otf`, and the prototype needs `.woff2`.** OpenType files are far
-larger than a web subset and Safari support is inconsistent. The build embeds
-fonts as data URIs, so each weight needs converting and subsetting to latin
-first.
+The design's `Typography/font style/sans serif` token names **PP Radio
+Grotesk**. Those files are not in the repository, so the prototype uses a
+clearly-marked stand-in (Outfit) for all sans text.
 
-Until both are settled the prototype keeps its substitute faces — Bodoni Moda
-for the serif (Didot on iOS) and Outfit for the sans. See HANDOFF.md §5 for the
-swap procedure and the two cosmetic compensations to remove once the real
-serif is in.
+Drop the `.woff2` files here to fix it — see `src/assets/fonts/README.md` for
+the four-step swap. The family is already first in the `--sans` stack, so it
+takes over as soon as the files exist.
+
+PP Right Grotesk was removed: it is a different family from the same foundry,
+uploaded by mistake, and it had no 400 weight at normal width, which made every
+`regular` token render too heavy.
 
 ## Licensing
 
 These are commercial faces in a public repository, which makes them
-downloadable by anyone. Consider making the repo private, or keeping only
+downloadable by anyone. Consider making the repo private, or keeping only the
 subset `.woff2` files here and the full `.otf` set somewhere access-controlled.

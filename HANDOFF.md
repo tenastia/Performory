@@ -105,7 +105,8 @@ top of `src/styles.css` as custom properties.
 ### Typography
 
 Serif `PP Right Didone` (narrow light, weight 300) for display; sans
-`PP Radio Grotesk` (ultralight 200 / regular 400) for everything else.
+`PP Radio Grotesk` (ultralight 200 / regular 400) for everything else — see §5
+on the Radio/Right Grotesk discrepancy.
 
 | Style | Size / line-height |
 | --- | --- |
@@ -184,26 +185,43 @@ asset URLs, and both typefaces are commercially licensed.
 
 Each is isolated behind one swap point.
 
-### Fonts
+### Fonts — serif done, sans placeholder
 
-`PP Right Didone` and `PP Radio Grotesk` are Pangram Pangram faces and are not
-redistributable, so the prototype ships free substitutes:
+| Design token | Font | Weight | Status |
+| --- | --- | --- | --- |
+| `font style/serif`, `narrow light` | PP Right Didone – Narrow Light | 300 | licensed |
+| `font style/sans serif` | Outfit (variable 100–900) | — | **placeholder** |
 
-- serif → **Didot** on iOS (a close match, already on the device), falling back
-  to embedded **Bodoni Moda**
-- sans → embedded **Outfit**
+The serif is the real licensed face, declared at the weight the font reports so
+the headings' token weight of 300 resolves directly.
 
-**To swap in the real fonts:** drop the `.woff2` files in
-`src/assets/fonts/`, add two `@font-face` blocks naming them `PP Right Didone`
-and `PP Radio Grotesk`, and register them in `build.mjs`'s inline list. Nothing
-else changes — both families are already first in the stacks in `src/styles.css`.
+**The sans is not the design's face.** The token names **PP Radio Grotesk**,
+which has not been supplied. PP Right Grotesk was uploaded instead — a
+different family from the same foundry — and has been removed from the
+repository: besides being the wrong family, it carried no 400 at normal width,
+so every `regular` token rendered at 500 and read heavy in long text.
 
-Two cosmetic compensations exist purely because Bodoni Moda runs wider than
-PP Right Didone's narrow cut, and should be **removed** once the real face is in:
+Outfit stands in until Radio Grotesk arrives. It is variable across 100–900, so
+both weights the tokens ask for resolve to real instances. `PP Radio Grotesk`
+is already first in the `--sans` stack; see `src/assets/fonts/README.md` for
+the swap.
 
-- `-0.015em` letter-spacing and `text-wrap: balance` on `.h3/.h5/.h6`
-- `.piece-card .card-title` overridden to 18/20 with a two-line clamp — the
-  design has it at `headings/h6` (20/20) on a single line
+### Icons — done
+
+`src/icons.js` serves the 19 exported glyphs from `/assets`, with their
+exported fills and strokes rewritten to `currentColor` so one glyph works
+white on the active tab, grey when inactive, and dark on a white button.
+
+Twelve glyphs the export set does not include are still drawn by hand in the
+same file, grouped under `drawn` and labelled: chevrons, check, search, stop,
+clock, bell, logout, folder, and the celebration drum.
+
+### Article covers — done
+
+`story-cover-one/two.jpg` are wired to the first two articles, re-encoded to
+31 KB and 22 KB and embedded by `build.mjs`. The third article still uses the
+generated fallback; `Data.articleArt()` prefers a supplied cover and only
+generates when there is none.
 
 ### Score artwork
 

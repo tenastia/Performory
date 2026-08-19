@@ -5,7 +5,7 @@ in place of them is a documented stand-in — see HANDOFF.md §5.
 
 | Folder | What goes here | Currently standing in |
 | --- | --- | --- |
-| `fonts/` | The licensed webfonts | Bodoni Moda + Outfit (free substitutes) |
+| `fonts/` | The licensed webfonts | — in use |
 | `scores/` | Engraved score exports from the design | Procedural SVG engravings |
 
 Anything added here is inlined into `dist/index.html` by `build.mjs`, so the
